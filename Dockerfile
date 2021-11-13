@@ -57,6 +57,6 @@ RUN	git clone https://github.com/official-stockfish/Stockfish.git && \
 	git checkout cluster && \
 	make -j10 ARCH=x86-64-avx2 clean profile-build COMPILER=mpicxx mpi=yes && \
 	mkdir /app && \
-	cp stockfish /app/stockfish-cluster
+	cp stockfish /home/mpirun/stockfish-cluster
  
 CMD ["/usr/sbin/sshd", "-D"]
