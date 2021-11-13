@@ -8,4 +8,5 @@ enables running UCI chess engine stockfish across multiple hosts
     ssh -i ssh/id_rsa.mpi -p ${hpcdocker_mpi_head_PORT} mpirun@${hpcdocker_mpi_head_IP}
 
 ## run stockfish from mpi_head
-    mpirun -np 4 /tmp/stockfish bench
+    mpirun -np 5 --pernode --bind-to none -v --hostfile /home/mpirun/hostfile /compartido/stockfish
+
