@@ -1,6 +1,6 @@
 FROM debian:latest
 RUN apt-get update && \
- 	apt-get install -y git mpich make gcc curl g++
+ 	apt-get install -y git make gcc curl g++
   
 ENV USER mpirun 
 ENV DEBIAN_FRONTEND=noninteractive 
@@ -16,7 +16,6 @@ RUN apt-get update -y && \
 # ------------------------------------------------------------
 # Set-Up SSH
 # ----------------------------------------------------
-#### TODO: clean this up -- seems wildly insecure ####
 
 RUN mkdir /var/run/sshd && \
     echo 'root:${USER}' | chpasswd && \
@@ -48,10 +47,6 @@ RUN rm -fr ${HOME}/.openmpi && mkdir -p ${HOME}/.openmpi
 ADD default-mca-params.conf ${HOME}/.openmpi/mca-params.conf
 RUN chown -R ${USER}:${USER} ${HOME}/.openmpi
 
-# ------------------------------------------------------------
-# FINALS
-# ------------------------------------------------------------
-
 ENV TRIGGER 1
 
 EXPOSE 22
@@ -63,6 +58,5 @@ RUN	git clone https://github.com/official-stockfish/Stockfish.git && \
 	make -j10 ARCH=x86-64-avx2 clean profile-build COMPILER=mpicxx mpi=yes && \
 	mkdir /app && \
 	cp stockfish /app/stockfish-cluster
-#COPY --from=stockfish /app/stockfish-cluster /tmp/stockfish-cluster
  
 CMD ["/usr/sbin/sshd", "-D"]
