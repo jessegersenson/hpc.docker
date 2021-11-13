@@ -13,6 +13,11 @@ RUN apt-get update -y && \
         gfortran libopenmpi-dev openmpi-bin openmpi-common openmpi-doc binutils 
 #    apt-get clean && apt-get purge && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# ------------------------------------------------------------
+# Set-Up SSH
+# ----------------------------------------------------
+#### TODO: clean this up -- seems wildly insecure ####
+
 RUN mkdir /var/run/sshd && \
     echo 'root:${USER}' | chpasswd && \
     sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
@@ -21,11 +26,6 @@ RUN mkdir /var/run/sshd && \
     adduser --disabled-password --gecos "" mpirun && \
     echo "${USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 # SSH login fix. Otherwise user is kicked off after login
-
-
-# ------------------------------------------------------------
-# Set-Up SSH
-# ------------------------------------------------------------
 
 ENV SSHDIR ${HOME}/.ssh/
 RUN mkdir -p ${SSHDIR}
